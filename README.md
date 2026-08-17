@@ -1,16 +1,20 @@
-# React + Vite
+# Nivesh Ledger
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A growing suite of money calculators built for Indian investors — starting with a SIP calculator that handles step-ups, inflation, and Indian capital-gains tax, with pre/post-tax returns and inflation-adjusted values.
 
-Currently, two official plugins are available:
+Built with React + Vite. Dark, glow-accented UI.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live
 
-## React Compiler
+- GitHub Pages: https://avishkaar007.github.io/nivesh-ledger/
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Dev
 
-## Expanding the Oxlint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Deploy
+
+GitHub Pages auto-deploys on every push to `main` via `.github/workflows/deploy.yml` (static build with `VITE_BASE=/nivesh-ledger/`).
