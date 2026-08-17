@@ -27,6 +27,15 @@ const CALC_VIEWS = {
 export default function App() {
   const [view, setView] = useState(() => window.location.hash.replace("#", "") || "home");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem("nl-theme") || "dark");
+
+  const THEMES = ["dark", "sunlight", "light"];
+  const toggleTheme = () =>
+    setTheme((t) => {
+      const next = THEMES[(THEMES.indexOf(t) + 1) % THEMES.length];
+      localStorage.setItem("nl-theme", next);
+      return next;
+    });
 
   useEffect(() => {
     const onHash = () => setView(window.location.hash.replace("#", "") || "home");
@@ -34,38 +43,35 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const closeSearch = () => setSearchOpen(false);
-
-  const openSearch = () => {
-    setSearchOpen(true);
-    if (view !== "home") goHome();
-  };
-
+  // Cmd/Ctrl+K focuses the nav search box and dims the rest of the page.
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        openSearch();
+        setSearchOpen((v) => {
+          const next = !v;
+          if (next) setTimeout(() => document.getElementById("nav-search-input")?.focus(), 30);
+          return next;
+        });
       } else if (e.key === "Escape") {
-        closeSearch();
+        setSearchOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view]);
+  }, []);
 
-  // Focus the top search bar once it is present and the spotlight is active.
+  // Close the search spotlight when clicking anywhere outside the search bar.
   useEffect(() => {
-    if (searchOpen && view === "home") {
-      const t = setTimeout(() => {
-        document.getElementById("calc-search-input")?.focus();
-      }, 60);
-      return () => clearTimeout(t);
-    }
-  }, [searchOpen, view]);
+    if (!searchOpen) return;
+    const onClick = (e) => {
+      if (!e.target.closest(".nav-search-box")) setSearchOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [searchOpen]);
 
-  const openCalc = (id) => { window.location.hash = id; closeSearch(); };
+  const openCalc = (id) => { window.location.hash = id; };
   const goHome = () => { window.location.hash = "home"; };
   const navigateSection = (id) => {
     goHome();
@@ -75,9 +81,8 @@ export default function App() {
   const Calc = CALC_VIEWS[view];
 
   return (
-    <div className="ledger-app">
-      {searchOpen && <div className="search-scrim" onClick={closeSearch} />}
-      <Nav onOpen={openCalc} onHome={goHome} onSearch={openSearch} />
+    <div className={`ledger-app ${theme === "dark" ? "" : `theme-${theme}`}`}>
+      <Nav onOpen={openCalc} onHome={goHome} searchActive={searchOpen} theme={theme} onToggleTheme={toggleTheme} />
       {Calc ? (
         <>
           <div className="calc-view-head">
@@ -88,7 +93,7 @@ export default function App() {
       ) : (
         <>
           <Hero onOpen={openCalc} />
-          <CalculatorGrid onOpen={openCalc} searchActive={searchOpen} />
+          <CalculatorGrid onOpen={openCalc} />
           <Roadmap />
           <TaxGuideAbout />
         </>

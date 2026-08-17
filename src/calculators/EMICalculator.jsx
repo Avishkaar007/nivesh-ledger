@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { Car, TrendingUp, Percent, Info } from "lucide-react";
+import { Car, TrendingUp, Percent, Info, Landmark } from "lucide-react";
 import Field from "../components/Field.jsx";
 import CalcInfo from "../components/CalcInfo.jsx";
 import { computeEMI } from "../lib/calculators/emi.js";

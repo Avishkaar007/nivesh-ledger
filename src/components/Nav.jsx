@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-import { Menu, X, ChevronDown, Landmark, ArrowRight, Search } from "lucide-react";
+import { Menu, X, ChevronDown, Landmark, ArrowRight, Search, Moon, Sun, Sunrise } from "lucide-react";
 import { roadmap } from "../data/roadmap.js";
 
-export default function Nav({ onOpen, onHome, onSearch }) {
+const THEME_ICONS = { dark: Moon, light: Sun, sunlight: Sunrise };
+const THEME_LABEL = { dark: "Switch to sunlight", light: "Switch to dark", sunlight: "Switch to light" };
+
+export default function Nav({ onOpen, onHome, searchActive = false, theme = "dark", onToggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const q = query.trim().toLowerCase();
+  const results = roadmap.filter(
+    (r) =>
+      !q ||
+      r.name.toLowerCase().includes(q) ||
+      r.blurb.toLowerCase().includes(q) ||
+      r.id.toLowerCase().includes(q)
+  );
 
   const go = (id) => {
     const item = roadmap.find((r) => r.id === id);
@@ -51,15 +64,51 @@ export default function Nav({ onOpen, onHome, onSearch }) {
               </div>
             )}
           </div>
-          <a href="#roadmap" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("roadmap")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>Roadmap</a>
           <a href="#tax-guide" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("tax-guide")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>Tax Guide</a>
-          <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>About</a>
         </nav>
 
-        <button className="nav-search" onClick={onSearch} aria-label="Search calculators (Cmd+K)">
-          <Search size={15} />
-          <span>Search</span>
-          <kbd>⌘K</kbd>
+        <div className={`nav-search-box${searchActive ? " spotlight" : ""}`}>
+          <Search size={14} />
+          <input
+            id="nav-search-input"
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search"
+            aria-label="Search calculators"
+          />
+          {query ? (
+            <button className="calc-search-clear" onClick={() => setQuery("")} aria-label="Clear search">×</button>
+          ) : (
+            <kbd className="nav-search-kbd">⌘K</kbd>
+          )}
+          {query && (
+            <div className="nav-search-menu">
+              {results.length ? (
+                results.map((r) => {
+                  const live = r.status === "live";
+                  return (
+                    <button
+                      key={r.id}
+                      className={`nav-search-item ${r.status}`}
+                      disabled={!live}
+                      onClick={() => { setQuery(""); onOpen(r.id); }}
+                    >
+                      <r.icon size={14} />
+                      <span>{r.name}</span>
+                      <em className={`tag ${r.status}`}>{live ? "Live" : "Soon"}</em>
+                    </button>
+                  );
+                })
+              ) : (
+                <div className="nav-search-empty">No matches for “{query}”</div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <button className="nav-theme" onClick={onToggleTheme} aria-label={THEME_LABEL[theme]} title={THEME_LABEL[theme]}>
+          {(() => { const Icon = THEME_ICONS[theme]; return <Icon size={16} />; })()}
         </button>
 
         <a href="#sip" className="nav-cta" onClick={(e) => { e.preventDefault(); onOpen("sip"); }}>
@@ -79,7 +128,6 @@ export default function Nav({ onOpen, onHome, onSearch }) {
             </a>
           ))}
           <a href="#tax-guide" onClick={(e) => { e.preventDefault(); onHome(); }}>Tax Guide</a>
-          <a href="#about" onClick={(e) => { e.preventDefault(); onHome(); }}>About</a>
         </div>
       )}
     </header>
