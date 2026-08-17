@@ -65,13 +65,18 @@ export default function Field({
         <div className="field-input">
           {prefix && <span className="prefix">{prefix}</span>}
           <input
-            type="number"
-            value={value}
+            type={format ? "text" : "number"}
+            inputMode={format ? "numeric" : undefined}
+            value={format ? display : value}
             onChange={(e) => {
               const v = e.target.value;
-              onChange(v === "" ? 0 : Number(v));
+              const parsed = Number(v);
+              onChange(v === "" || Number.isNaN(parsed) ? 0 : parsed);
             }}
-            onBlur={(e) => onChange(clamp(Number(e.target.value) || 0, min, max))}
+            onBlur={(e) => {
+              const p = Number(e.target.value);
+              onChange(Number.isNaN(p) ? value : clamp(p || 0, min, max));
+            }}
           />
           {unit && <span className="unit">{unit}</span>}
         </div>

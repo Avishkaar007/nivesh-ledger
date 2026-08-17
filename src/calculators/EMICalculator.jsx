@@ -2,8 +2,9 @@ import React, { useState, useMemo } from "react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
-import { Landmark, TrendingUp, Percent, Info } from "lucide-react";
+import { Car, TrendingUp, Percent, Info } from "lucide-react";
 import Field from "../components/Field.jsx";
+import CalcInfo from "../components/CalcInfo.jsx";
 import { computeEMI } from "../lib/calculators/emi.js";
 import { inrWords, num } from "../lib/format.js";
 
@@ -41,6 +42,12 @@ export default function EMICalculator() {
         <h2>EMI Calculator</h2>
         <p>Loan EMI, total interest and repayment — with the impact of a one-time prepayment, sliders or exact figures.</p>
       </div>
+
+      <CalcInfo
+        what="your monthly EMI, total interest and repayment, plus how a one-time prepayment shortens the tenure or cuts the EMI."
+        concept="spreading a loan into equal payments of principal plus interest over a fixed tenure."
+        why="to compare home or car loans and see how extra prepayments save interest."
+      />
 
       <div className="calc-grid">
         {/* ------ inputs ------ */}

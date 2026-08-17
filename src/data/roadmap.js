@@ -4,13 +4,14 @@
 
 import {
   TrendingUp,
-  Landmark,
+  Car,
   PiggyBank,
   Wallet,
   Repeat,
   Calculator,
   Percent,
   Building2,
+  Banknote,
 } from "lucide-react";
 
 export const roadmap = [
@@ -26,13 +27,27 @@ export const roadmap = [
     name: "EMI Calculator",
     blurb: "Loan EMI, total interest & amortization schedule for home/car loans.",
     status: "live",
-    icon: Landmark,
+    icon: Car,
+  },
+  {
+    id: "compound",
+    name: "Compound Interest Calculator",
+    blurb: "Lump-sum growth where interest earns interest.",
+    status: "live",
+    icon: Banknote,
+  },
+  {
+    id: "simple",
+    name: "Simple Interest Calculator",
+    blurb: "Flat interest on the original principal only.",
+    status: "live",
+    icon: Calculator,
   },
   {
     id: "fd",
     name: "FD Calculator",
     blurb: "Fixed Deposit maturity amount with quarterly compounding.",
-    status: "soon",
+    status: "live",
     icon: PiggyBank,
   },
   {
@@ -46,21 +61,14 @@ export const roadmap = [
     id: "swp",
     name: "SWP Calculator",
     blurb: "Plan systematic withdrawals and see how long your corpus lasts.",
-    status: "soon",
+    status: "live",
     icon: Repeat,
-  },
-  {
-    id: "rd",
-    name: "RD Calculator",
-    blurb: "Recurring Deposit returns for monthly savings habit.",
-    status: "soon",
-    icon: Calculator,
   },
   {
     id: "incometax",
     name: "Income Tax Calculator",
     blurb: "Old vs New regime comparison for FY 2025-26.",
-    status: "soon",
+    status: "live",
     icon: Percent,
   },
   {

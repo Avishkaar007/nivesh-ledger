@@ -4,6 +4,7 @@ import {
 } from "recharts";
 import { Wallet, TrendingUp, Percent, BadgeCheck, Info } from "lucide-react";
 import Field from "../components/Field.jsx";
+import CalcInfo from "../components/CalcInfo.jsx";
 import { computeSIP } from "../lib/calculators/sip.js";
 import { inrWords, pctFmt } from "../lib/format.js";
 import { EQUITY_CAPITAL_GAINS as TAX } from "../lib/indianTax.js";
@@ -39,14 +40,20 @@ export default function SIPCalculator() {
         <p>Project a monthly SIP with step-ups, inflation, and Indian capital-gains tax — sliders or exact figures, your call.</p>
       </div>
 
+      <CalcInfo
+        what="your expected corpus from monthly SIPs, a lumpsum and step-up, shown before and after tax and inflation."
+        concept="systematic investing that uses rupee-cost averaging and compounding returns."
+        why="to plan long-term goals such as retirement, a house or your child's future."
+      />
+
       <div className="calc-grid">
         {/* ------ inputs ------ */}
         <div className="panel inputs-panel">
           <div className="panel-group">
             <h3><Wallet size={16} /> Contribution</h3>
-            <Field label="Monthly SIP" value={monthlySIP} onChange={setMonthlySIP} min={100} max={1000000} step={500} prefix="₹" />
-            <Field label="Initial Lumpsum" value={lumpsum} onChange={setLumpsum} min={0} max={5000000} step={5000} prefix="₹" />
-            <Field label="SIP Step-Up" value={stepUpPct} onChange={setStepUpPct} min={0} max={25} step={0.5} unit="%" />
+            <Field label="Monthly SIP" value={monthlySIP} onChange={setMonthlySIP} min={100} max={1000000} step={500} prefix="₹" helper="Fixed amount invested every month." />
+            <Field label="Initial Lumpsum" value={lumpsum} onChange={setLumpsum} min={0} max={5000000} step={5000} prefix="₹" helper="One-time amount invested at the start. 0 = start from scratch." />
+            <Field label="SIP Step-Up" value={stepUpPct} onChange={setStepUpPct} min={0} max={25} step={0.5} unit="%" helper="Annual percentage increase in your monthly SIP." />
             <div className="field">
               <div className="field-head"><label>Step-Up Frequency</label></div>
               <div className="segmented">
@@ -58,7 +65,7 @@ export default function SIPCalculator() {
 
           <div className="panel-group">
             <h3><TrendingUp size={16} /> Growth Assumptions</h3>
-            <Field label="Investment Duration" value={years} onChange={setYears} min={1} max={50} step={1} unit=" yrs" />
+            <Field label="Investment Duration" value={years} onChange={setYears} min={1} max={50} step={1} unit=" yrs" helper="Total time you keep investing." />
             <Field label="Expected Return Rate" value={returnRate} onChange={setReturnRate} min={1} max={30} step={0.25} unit="%" helper="Assumed annual (CAGR) growth of your investment." />
             <Field label="Inflation Rate" value={inflationRate} onChange={setInflationRate} min={0} max={15} step={0.25} unit="%" helper="Used only to compute your inflation-adjusted Real Return." />
           </div>
@@ -85,7 +92,7 @@ export default function SIPCalculator() {
               <>
                 <Field label="Custom LTCG Rate" value={customLtcg} onChange={setCustomLtcg} min={0} max={42.74} step={0.1} unit="%" helper="Applied when duration is 12 months or more." />
                 <Field label="Custom STCG Rate" value={customStcg} onChange={setCustomStcg} min={0} max={42.74} step={0.1} unit="%" helper="Applied when duration is under 12 months." />
-                <Field label="Annual Exemption" value={customExemption} onChange={setCustomExemption} min={0} max={500000} step={5000} prefix="₹" />
+                <Field label="Annual Exemption" value={customExemption} onChange={setCustomExemption} min={0} max={500000} step={5000} prefix="₹" helper="Annual tax-free capital gains threshold before tax applies." />
               </>
             )}
           </div>
