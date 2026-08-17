@@ -10,7 +10,7 @@ export default function Roadmap() {
         <p>SIP is the first entry. Here's what's being added next.</p>
       </div>
       <div className="roadmap-grid">
-        {roadmap.map((r) => (
+        {roadmap.filter((r) => r.status === "soon").map((r) => (
           <div key={r.name} className={`roadmap-card ${r.status}`}>
             <r.icon size={22} />
             <h4>{r.name}</h4>

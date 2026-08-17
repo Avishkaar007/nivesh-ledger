@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { Menu, X, ChevronDown, Landmark, ArrowRight } from "lucide-react";
 import { roadmap } from "../data/roadmap.js";
-import { scrollToId } from "../lib/scroll.js";
 
-export default function Nav() {
+export default function Nav({ onOpen, onHome }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [calcOpen, setCalcOpen] = useState(false);
 
   const go = (id) => {
     setMenuOpen(false);
     setCalcOpen(false);
-    scrollToId(id);
+    onOpen(id);
   };
 
   return (
     <header className="nav">
       <div className="nav-inner">
-        <a href="#top" className="brand" onClick={(e) => { e.preventDefault(); go("top"); }}>
+        <a href="#home" className="brand" onClick={(e) => { e.preventDefault(); onHome(); }}>
           <span className="brand-mark"><Landmark size={18} /></span>
           <span className="brand-text">Nivesh<em>Ledger</em></span>
         </a>
@@ -34,10 +33,10 @@ export default function Nav() {
               <div className="dropdown-panel">
                 {roadmap.map((r) => (
                   <a
-                    key={r.name}
-                    href={`#${r.sectionId}`}
+                    key={r.id}
+                    href={`#${r.id}`}
                     className={`dropdown-item ${r.status}`}
-                    onClick={(e) => { e.preventDefault(); go(r.sectionId); }}
+                    onClick={(e) => { e.preventDefault(); go(r.id); }}
                   >
                     <r.icon size={15} />
                     <span>{r.name}</span>
@@ -47,12 +46,12 @@ export default function Nav() {
               </div>
             )}
           </div>
-          <a href="#roadmap" className="nav-link" onClick={(e) => { e.preventDefault(); go("roadmap"); }}>Roadmap</a>
-          <a href="#tax-guide" className="nav-link" onClick={(e) => { e.preventDefault(); go("tax-guide"); }}>Tax Guide</a>
-          <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); go("about"); }}>About</a>
+          <a href="#roadmap" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("roadmap")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>Roadmap</a>
+          <a href="#tax-guide" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("tax-guide")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>Tax Guide</a>
+          <a href="#about" className="nav-link" onClick={(e) => { e.preventDefault(); onHome(); window.location.hash = "home"; requestAnimationFrame(() => setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 120)); }}>About</a>
         </nav>
 
-        <a href="#calculator" className="nav-cta" onClick={(e) => { e.preventDefault(); go("calculator"); }}>
+        <a href="#sip" className="nav-cta" onClick={(e) => { e.preventDefault(); onOpen("sip"); }}>
           Open SIP Calculator <ArrowRight size={14} />
         </a>
 
@@ -64,12 +63,12 @@ export default function Nav() {
       {menuOpen && (
         <div className="mobile-menu">
           {roadmap.map((r) => (
-            <a key={r.name} href={`#${r.sectionId}`} onClick={(e) => { e.preventDefault(); go(r.sectionId); }}>
+            <a key={r.id} href={`#${r.id}`} onClick={(e) => { e.preventDefault(); go(r.id); }}>
               {r.name} <em className={`tag ${r.status}`}>{r.status === "live" ? "Live" : "Soon"}</em>
             </a>
           ))}
-          <a href="#tax-guide" onClick={(e) => { e.preventDefault(); go("tax-guide"); }}>Tax Guide</a>
-          <a href="#about" onClick={(e) => { e.preventDefault(); go("about"); }}>About</a>
+          <a href="#tax-guide" onClick={(e) => { e.preventDefault(); onHome(); }}>Tax Guide</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); onHome(); }}>About</a>
         </div>
       )}
     </header>

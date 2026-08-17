@@ -15,48 +15,56 @@ import {
 
 export const roadmap = [
   {
+    id: "sip",
     name: "SIP Calculator",
     blurb: "Estimate wealth from monthly SIPs with inflation-adjusted goals.",
     status: "live",
     icon: TrendingUp,
   },
   {
+    id: "emi",
     name: "EMI Calculator",
     blurb: "Loan EMI, total interest & amortization schedule for home/car loans.",
-    status: "soon",
+    status: "live",
     icon: Landmark,
   },
   {
+    id: "fd",
     name: "FD Calculator",
     blurb: "Fixed Deposit maturity amount with quarterly compounding.",
     status: "soon",
     icon: PiggyBank,
   },
   {
+    id: "ppf",
     name: "PPF Calculator",
     blurb: "15-year PPF with yearly limits, rate changes & extension rules.",
     status: "soon",
     icon: Wallet,
   },
   {
+    id: "swp",
     name: "SWP Calculator",
     blurb: "Plan systematic withdrawals and see how long your corpus lasts.",
     status: "soon",
     icon: Repeat,
   },
   {
+    id: "rd",
     name: "RD Calculator",
     blurb: "Recurring Deposit returns for monthly savings habit.",
     status: "soon",
     icon: Calculator,
   },
   {
+    id: "incometax",
     name: "Income Tax Calculator",
     blurb: "Old vs New regime comparison for FY 2025-26.",
     status: "soon",
     icon: Percent,
   },
   {
+    id: "gratuity",
     name: "Gratuity Calculator",
     blurb: "Calculate gratuity under Payment of Gratuity Act.",
     status: "soon",

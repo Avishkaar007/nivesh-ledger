@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { scrollToId } from "../lib/scroll.js";
 import { roadmap } from "../data/roadmap.js";
 
-export default function Hero() {
+export default function Hero({ onOpen }) {
   const liveCount = roadmap.filter((r) => r.status === "live").length;
   const soonCount = roadmap.filter((r) => r.status === "soon").length;
 
@@ -21,7 +21,7 @@ export default function Hero() {
           starting with SIPs, and built to hold a full shelf of them: loans, deposits, retirement, and tax.
         </p>
         <div className="hero-actions">
-          <a href="#calculator" className="btn-primary" onClick={(e) => { e.preventDefault(); scrollToId("calculator"); }}>
+          <a href="#sip" className="btn-primary" onClick={(e) => { e.preventDefault(); onOpen("sip"); }}>
             Calculate your SIP <ArrowRight size={16} />
           </a>
           <a href="#roadmap" className="btn-ghost" onClick={(e) => { e.preventDefault(); scrollToId("roadmap"); }}>
